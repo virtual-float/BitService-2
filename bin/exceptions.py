@@ -25,5 +25,15 @@ class ComponentInitError(Exception):
     def __init__(self, message: str) -> None:
         super().__init__(message)
 
+
+# exceptions related to accessing things that you were not supposed to access or using wrong type
+class ChangeOfConstant(Exception):
+    def __init__(self, message: str, *args: object) -> None:
+        super().__init__(message, *args)
+        
+class InvalidType(Exception):
+    def __init__(self, message: str, *args: object) -> None:
+        super().__init__(message, *args)
+
 # Custom game files related exceptions
 # TODO: Add more exceptions
