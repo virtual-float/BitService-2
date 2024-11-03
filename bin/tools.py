@@ -1,0 +1,46 @@
+# - - - - - - - #
+#    Tools.py   #
+# - - - - - - - #
+
+# 
+# [!] The functions will be improved and more developed
+#
+
+# Imports
+import json
+from os import getcwd
+
+# Local imports
+import bin.exceptions as e
+
+# Check if the document path ends with an extension of .json
+def isJSONFile(document_path: str) -> bool:
+    return document_path.endswith(('.json', '.jso'))
+
+# Asynchronous function to read json file and return the content in form of dict
+async def readJSON(document_path: str) -> dict:
+    if not isJSONFile(document_path):
+        raise e.JSONInvalidFileError('Attempted to read a non-json file!')
+
+    with open(file=getcwd() + document_path, mode='r', encoding='UTF-8') as file:
+        content = file.read()
+
+        return json.loads(content)
+
+# Asynchronous function to write json file
+async def writeJSON(document_path: str, json_pyobj: dict) -> None:
+    if not isJSONFile(document_path):
+        raise e.JSONInvalidFileError('Attempted to write to a non-json file!')
+
+    with open(file=getcwd() + document_path, mode='w', encoding='UTF-8') as file:
+        stringified_json = json.dumps(json_pyobj, indent=4)
+
+        file.write(stringified_json)
+
+# Asynchronous function to create an empty json file
+async def createJSON(document_destination: str) -> None:
+    if not isJSONFile(document_destination):
+        raise e.JSONInvalidFileError('Attempted to create a non-json file!')
+    
+    with open(file=getcwd() + document_destination, mode='x', encoding='UTF-8') as file:
+        file.write('{}')
