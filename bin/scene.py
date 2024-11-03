@@ -15,8 +15,7 @@ from bin.exceptions import ChangeOfConstant, InvalidType
 # Every scene contains of sprites, its own attributes, loop and draw method
 # without that it would be a very great hustle for example to change a scene from a office to his home (just example)
 
-@ABC
-class Scene(spriteGroup):
+class Scene(ABC, spriteGroup):
     @abstractmethod
     async def draw(self, screen: Surface) -> None: pass
     
