@@ -35,6 +35,15 @@ class ResourceManager:
     currentResourceManager: 'ResourceManager | None' = None
     
     
+    
+    def clean(self):
+        """removes unused resources from cache
+        """
+        for resourceName, resourceObject in self.__savedFiles.items():
+           if resourceObject[1] <= 0:
+               del self.__savedFiles[resourceName]
+    
+    
     def getRaw(self, path: str, addToUseCount: bool = False, reloadForce: bool = False) -> any:
         """allows you to get easily specified path. If it was cached, the cache is used!
 
