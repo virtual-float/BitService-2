@@ -165,12 +165,12 @@ class ResourceManager:
                 
             # surface files for images
             if path.endswith(SURFACEFILES) or forceType == loadedFileType.pygamesurface:
-                toLoad = loadImagePygame(path)
+                toLoad = loadImagePygame(path).convert()
                 fileType = loadedFileType.pygamesurface
                 
             # surface files for transparent images
             if path.endswith(SURFACEFILESTRANSPARENT) or forceType == loadedFileType.pygamesurfaceTransparent:
-                toLoad = loadImagePygame(path, SRCALPHA)
+                toLoad = loadImagePygame(path, SRCALPHA).convert_alpha()
                 fileType = loadedFileType.pygamesurfaceTransparent
 
             # surface files for images
