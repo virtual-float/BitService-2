@@ -45,6 +45,10 @@ class InvalidTypeError(Exception):
 class internalResourceManagerError(Exception):
     def __init__(self, message: str, *args: object) -> None:
         super().__init__(message, *args)
+        
+class accessToNotExistingResourceError(Exception):
+    def __init__(self, message: str, *args: object) -> None:
+        super().__init__(message, *args)
 
 # Custom game files related exceptions
 class UnavailableFontError(Exception):

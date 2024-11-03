@@ -10,7 +10,7 @@ from pygame.image import load as loadImagePygame
 from enum import Enum
 
 # local imports
-from bin.exceptions import internalResourceManagerError
+from bin.exceptions import internalResourceManagerError, accessToNotExistingResourceError
 from bin.tools import readJSON
 
 class loadedFileType(Enum):
@@ -42,6 +42,70 @@ class ResourceManager:
         for resourceName, resourceObject in self.__savedFiles.items():
            if resourceObject[1] <= 0:
                del self.__savedFiles[resourceName]
+               
+              
+              
+               
+    def getRawUseCount(self, path: str) -> int:
+        """ allows you to get current use of this resource
+
+        Args:
+            path (str): a path to a resource
+
+        Raises:
+            accessToNotExistingResourceError: occurs if there was a try to access nonexistent resource
+
+        Returns:
+            int: current use
+        """
+        obj = self.__savedFiles.get(path)
+        if obj != None:
+            raise accessToNotExistingResourceError(f"Resource {path} doesnt exist")
+        
+        return obj[1]
+        
+    def addRawUseCount(self, path: str, howmuch: int = 1) -> int:
+        """_summary_
+
+        Args:
+            path (str): a path to a resource
+            howmuch (int, optional): How much to add. Defaults to 1.
+
+        Raises:
+            accessToNotExistingResourceError: occurs if there was a try to access nonexistent resource
+
+        Returns:
+            int: current use after addition
+        """
+        obj = self.__savedFiles.get(path)
+        if obj != None:
+            raise accessToNotExistingResourceError(f"Resource {path} doesnt exist")
+        
+        self.__savedFiles[path][1] += howmuch      
+        return obj[1]
+               
+
+    def subRawUseCount(self, path: str, howmuch: int = 1) -> int:
+        """_summary_
+
+        Args:
+            path (str): a path to a resource
+            howmuch (int, optional): How much to subtract. Defaults to 1.
+
+        Raises:
+            accessToNotExistingResourceError: occurs if there was a try to access nonexistent resource
+
+        Returns:
+            int: current use after subtraction
+        """
+        obj = self.__savedFiles.get(path)
+        if obj != None:
+            raise accessToNotExistingResourceError(f"Resource {path} doesnt exist")
+        
+        self.__savedFiles[path][1] -= howmuch  
+        return obj[1]    
+
+    
     
     
     def getRaw(self, path: str, addToUseCount: bool = False, reloadForce: bool = False) -> any:
@@ -138,6 +202,7 @@ class ResourceManager:
         
         
         self.__savedFiles: dict[str, list[any, int, str, list[bool]]] = {}
+        self.__savedFiles.setdefault(None)
         
 
     
