@@ -196,7 +196,7 @@ class ResourceManager:
                 
             # set wrapper
             if wrapper != None:
-                wrapper[3] = True
+                wrapper[3][0] = True
                 
                 
         except Exception as e:
