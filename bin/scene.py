@@ -51,7 +51,9 @@ class Scene(ABC, LayeredDirty):
     def active(self, val: Optional[bool]):
         if val != None:
             if val != True and val != False:
-                raise InvalidTypeError("The scene can be only active or not active, nothing in between!")        
+                raise InvalidTypeError("The scene can be only active or not active, nothing in between!") 
+        
+        self.__isActive = val       
     
     def __init__(self, name: str, isActive: bool = True, *sprites: Union[AbstractGroup, Iterable]) -> None:
         # intialize pygame stuff
