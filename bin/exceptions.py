@@ -25,15 +25,23 @@ class ComponentInitError(Exception):
     def __init__(self, message: str) -> None:
         super().__init__(message)
 
+class ComponentMethodImpError(Exception):
+    def __init__(self, message: str) -> None:
+        super().__init__(message)
+
 
 # exceptions related to accessing things that you were not supposed to access or using wrong type
-class ChangeOfConstant(Exception):
+class ConstantChangeError(Exception):
     def __init__(self, message: str, *args: object) -> None:
         super().__init__(message, *args)
         
-class InvalidType(Exception):
+class InvalidTypeError(Exception):
     def __init__(self, message: str, *args: object) -> None:
         super().__init__(message, *args)
 
 # Custom game files related exceptions
+class UnavailableFontError(Exception):
+    def __init__(self, message: str) -> None:
+        super().__init__(message)
+
 # TODO: Add more exceptions

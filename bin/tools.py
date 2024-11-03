@@ -7,7 +7,7 @@
 #
 
 # Imports
-import json
+import json, pygame
 from os import getcwd
 
 # Local imports
@@ -38,9 +38,27 @@ async def writeJSON(document_path: str, json_pyobj: dict) -> None:
         file.write(stringified_json)
 
 # Asynchronous function to create an empty json file
-async def createJSON(document_destination: str) -> None:
+async def createJSON(document_destination: str, json_pyobj: dict = {}) -> None:
     if not isJSONFile(document_destination):
         raise e.JSONInvalidFileError('Attempted to create a non-json file!')
     
     with open(file=getcwd() + document_destination, mode='x', encoding='UTF-8') as file:
-        file.write('{}')
+        stringified_json = json.dumps(json_pyobj, indent=4)
+
+        file.write(stringified_json)
+
+# Function to load an image and return it as a pygame.Surface object
+def readImage(image_path: str, scale: float = 1.0, uses_alpha: int = False) -> pygame.Surface:
+    full_path = getcwd() + image_path
+
+    image = pygame.image.load(full_path)
+
+    if uses_alpha:
+        image = image.convert_alpha()
+
+    if scale < 0.0:
+        raise ValueError('Attempted to use a negative factor for scaling the image!')
+    
+    image = pygame.transform.scale_by(image, scale)
+
+    return image
