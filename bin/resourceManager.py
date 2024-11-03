@@ -5,6 +5,7 @@
 # The purpose of this module is to not reuse the same texture and waste memory and computing time
 
 # global imports
+from pygame import SRCALPHA
 from pygame.surface import Surface
 from pygame.image import load as loadImagePygame
 from enum import Enum
@@ -15,7 +16,9 @@ from bin.tools import readJSON
 
 class loadedFileType(Enum):
     pygamesurface = "pygamesurface"
+    pygamesurfaceTransparent = "pygamesurfacetransparent"
     surface = "pygamesurface"
+    surfaceTransparent = "pygamesurfacetransparent"
     json = "json"
     pythonmodule = "pythonmodule"
     python = "pythonmodule"
@@ -24,7 +27,8 @@ class loadedFileType(Enum):
     raw = "rawfile"
 
 JSONFILES = (".json", ".jso")
-SURFACEFILES = (".png")
+SURFACEFILES = (".jpg")
+SURFACEFILESTRANSPARENT = (".png")
 
 class ResourceManager:
     """Single unit of resourceManager. the latest is saved automatically, but in theory you can have more than one.
@@ -163,6 +167,11 @@ class ResourceManager:
             if path.endswith(SURFACEFILES) or forceType == loadedFileType.pygamesurface:
                 toLoad = loadImagePygame(path)
                 fileType = loadedFileType.pygamesurface
+                
+            # surface files for transparent images
+            if path.endswith(SURFACEFILESTRANSPARENT) or forceType == loadedFileType.pygamesurfaceTransparent:
+                toLoad = loadImagePygame(path, SRCALPHA)
+                fileType = loadedFileType.pygamesurfaceTransparent
 
             # surface files for images
             elif path.endswith(JSONFILES) or forceType == loadedFileType.json:
