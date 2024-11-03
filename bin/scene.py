@@ -2,7 +2,7 @@
 #    scene.py       #
 #####################
 
-# global import
+# global imports
 from abc import ABC, abstractmethod
 from typing import Iterable, Optional, Union
 from pygame.sprite import AbstractGroup, Group as spriteGroup, LayeredDirty
