@@ -7,6 +7,8 @@ import bin.fonts as font
 
 async def main():
     pygame.init()
+    pygame.font.init()
+    pygame.mixer.init()
 
     display = pygame.display.set_mode((800, 600))
     pygame.display.set_caption("Test")
