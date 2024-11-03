@@ -5,19 +5,19 @@
 # global import
 from abc import ABC, abstractmethod
 from typing import Iterable
-from pygame.sprite import AbstractGroup, Group as spriteGroup
+from pygame.sprite import AbstractGroup, Group as spriteGroup, LayeredDirty
 from pygame.surface import Surface
+from asyncio import sleep
 
 # local imports
 from bin.exceptions import ChangeOfConstant, InvalidType
 
 # The purpose of this module is to allow abstraction of what is seen on screen
-# Every scene contains of sprites, its own attributes, loop and draw method
+# Every scene contains of dirty sprites, its own attributes, and loop method
 # without that it would be a very great hustle for example to change a scene from a office to his home (just example)
 
-class Scene(ABC, spriteGroup):
-    @abstractmethod
-    async def draw(self, screen: Surface) -> None: pass
+class Scene(ABC, LayeredDirty):
+    tickrate = 1/20
     
     @abstractmethod
     async def loop(self) -> None: pass
@@ -26,7 +26,10 @@ class Scene(ABC, spriteGroup):
     async def __internalLoop(self):
         if self.active:
             self.loop()
-        
+            self.update()
+            
+        # tickrate is 20 per seconds
+        sleep(self.tickrate)
         
     # -------------------------    
     # property accessing points
