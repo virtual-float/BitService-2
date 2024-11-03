@@ -42,11 +42,11 @@ class InvalidTypeError(Exception):
         
 # resourceManager errors
 
-class internalResourceManagerError(Exception):
+class InternalResourceManagerError(Exception):
     def __init__(self, message: str, *args: object) -> None:
         super().__init__(message, *args)
         
-class accessToNotExistingResourceError(Exception):
+class AccessToNotExistingResourceError(Exception):
     def __init__(self, message: str, *args: object) -> None:
         super().__init__(message, *args)
 
