@@ -5,6 +5,7 @@ from typing import Final
 # Local imports
 import bin.fonts as font
 import bin.tools as tools
+import bin.resourceManager as rsPackage
 
 pygame.init()
 pygame.font.init()
@@ -12,8 +13,11 @@ pygame.mixer.init()
 
 
 async def main():
+    rs = rsPackage.ResourceManager()
+    
     # TODO: Add a loading screen window
-    app_resource: Final[dict] = await tools.readJSON('\\config\\default.json')
+    # app_resource: Final[dict] = await tools.readJSON('\\config\\default.json')
+    app_resource: Final[dict] = await rs.getRaw('\\config\\default.json', True, True)
 
     display = pygame.display.set_mode((800, 600))
     pygame.display.set_caption(app_resource.get('title'))

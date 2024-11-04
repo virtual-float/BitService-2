@@ -11,6 +11,8 @@ from pygame.image import load as loadImagePygame
 from enum import Enum
 from typing import Iterable, TypedDict, Optional
 from datetime import datetime
+import traceback
+from aiofiles import open as asyncOpen
 
 # local imports
 from bin.exceptions import InternalResourceManagerError, AccessToNotExistingResourceError
@@ -194,7 +196,7 @@ class ResourceManager:
             await self.loadRaw(path)
             
         # get object    
-        objectToReturnAndChange: list[any,int,str] | None = self.__savedFiles.get(path, default = None)
+        objectToReturnAndChange: list[any,int,str] | None = self.__savedFiles.get(path)
         
         # if it's none, there's something not good :c
         if objectToReturnAndChange == None:
@@ -219,7 +221,7 @@ class ResourceManager:
             internalResourceManagerError: If it couldn't get its way to load a resource
         """
         try:
-            obj = self.__savedFiles.get(path, default = None) # previous obj if there was
+            obj = self.__savedFiles.get(path) # previous obj if there was
             
             # wrapper for seeing if a resource was changed
             wrapper: list[bool] | None = None # object to be changed after update is done
@@ -238,13 +240,13 @@ class ResourceManager:
 
             # surface files for images
             elif path.endswith(JSONFILES) or forceType == loadedFileType.json:
-                toLoad = readJSON(path)
+                toLoad = await readJSON(path)
                 fileType = loadedFileType.json   
                 
             
             # no other types
             else:
-                async with open(path, "r") as file:
+                async with asyncOpen(path, "r") as file:
                     toLoad = await file.read()
                 fileType = loadedFileType.rawfile
                          

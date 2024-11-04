@@ -10,6 +10,7 @@
 import json, pygame
 from os import getcwd
 from typing import Any
+from aiofiles import open as asyncOpen
 
 # Local imports
 import bin.exceptions as e
@@ -23,20 +24,20 @@ async def readJSON(document_path: str) -> dict:
     if not isJSONFile(document_path):
         raise e.JSONInvalidFileError('Attempted to read a non-json file!')
 
-    with open(file=getcwd() + document_path, mode='r', encoding='UTF-8') as file:
-        content = file.read()
+    async with asyncOpen(file=getcwd() + document_path, mode='r', encoding='UTF-8') as file:
+        content = await file.read()
 
-        return json.loads(content)
+    return json.loads(content)
 
 # Asynchronous function to write json file
 async def writeJSON(document_path: str, json_pyobj: dict) -> None:
     if not isJSONFile(document_path):
         raise e.JSONInvalidFileError('Attempted to write to a non-json file!')
 
-    with open(file=getcwd() + document_path, mode='w', encoding='UTF-8') as file:
+    with asyncOpen(file=getcwd() + document_path, mode='w', encoding='UTF-8') as file:
         stringified_json = json.dumps(json_pyobj, indent=4)
 
-        file.write(stringified_json)
+        await file.write(stringified_json)
 
 # Asynchronous function to create an empty json file
 async def createJSON(document_destination: str, json_pyobj: dict = {}) -> None:
