@@ -9,13 +9,14 @@
 # Imports
 import json, pygame
 from os import getcwd
+from typing import Any
 
 # Local imports
 import bin.exceptions as e
 
 # Check if the document path ends with an extension of .json
 def isJSONFile(document_path: str) -> bool:
-    return document_path.endswith(('.json', '.jso'))
+    return document_path.endswith('.json')
 
 # Asynchronous function to read json file and return the content in form of dict
 async def readJSON(document_path: str) -> dict:

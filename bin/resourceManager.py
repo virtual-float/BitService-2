@@ -13,7 +13,7 @@ from typing import Iterable, TypedDict, Optional
 from datetime import datetime
 
 # local imports
-from bin.exceptions import internalResourceManagerError, accessToNotExistingResourceError
+from bin.exceptions import InternalResourceManagerError, AccessToNotExistingResourceError
 from bin.tools import readJSON
 
 class loadedFileType(Enum):
@@ -85,7 +85,7 @@ class preloadStatusInterface(TypedDict):
     stopped: bool
 
 
-JSONFILES = (".json", ".jso")
+JSONFILES = (".json")
 SURFACEFILES = (".jpg")
 SURFACEFILESTRANSPARENT = (".png")
 
@@ -127,7 +127,7 @@ class ResourceManager:
         """
         obj = self.__savedFiles.get(path)
         if obj != None:
-            raise accessToNotExistingResourceError(f"Resource {path} doesnt exist")
+            raise AccessToNotExistingResourceError(f"Resource {path} doesnt exist")
         
         return obj[1]
         
@@ -146,7 +146,7 @@ class ResourceManager:
         """
         obj = self.__savedFiles.get(path)
         if obj != None:
-            raise accessToNotExistingResourceError(f"Resource {path} doesnt exist")
+            raise AccessToNotExistingResourceError(f"Resource {path} doesnt exist")
         
         self.__savedFiles[path][1] += howmuch      
         return obj[1]
@@ -167,7 +167,7 @@ class ResourceManager:
         """
         obj = self.__savedFiles.get(path)
         if obj != None:
-            raise accessToNotExistingResourceError(f"Resource {path} doesnt exist")
+            raise AccessToNotExistingResourceError(f"Resource {path} doesnt exist")
         
         self.__savedFiles[path][1] -= howmuch  
         return obj[1]    
@@ -198,7 +198,7 @@ class ResourceManager:
         
         # if it's none, there's something not good :c
         if objectToReturnAndChange == None:
-            raise internalResourceManagerError(f"Objects for '{path}' are corrupted or do not exist!")
+            raise InternalResourceManagerError(f"Objects for '{path}' are corrupted or do not exist!")
         
         # use count
         if addToUseCount:
@@ -263,7 +263,7 @@ class ResourceManager:
                 
                 
         except Exception as e:
-            raise internalResourceManagerError(f"there was internal resource manager error that went undetected!\n Error: {e}")
+            raise InternalResourceManagerError(f"there was internal resource manager error that went undetected!\n Error: {e}")
 
         
         

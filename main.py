@@ -1,17 +1,22 @@
 # Imports
 import asyncio, pygame
+from typing import Final
 
 # Local imports
 import bin.fonts as font
+import bin.tools as tools
+
+pygame.init()
+pygame.font.init()
+pygame.mixer.init()
 
 
 async def main():
-    pygame.init()
-    pygame.font.init()
-    pygame.mixer.init()
+    # TODO: Add a loading screen window
+    app_resource: Final[dict] = await tools.readJSON('\\config\\default.json')
 
     display = pygame.display.set_mode((800, 600))
-    pygame.display.set_caption("Test")
+    pygame.display.set_caption(app_resource.get('title'))
 
     running = True
 
