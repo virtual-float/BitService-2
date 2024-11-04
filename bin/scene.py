@@ -17,10 +17,14 @@ from bin.exceptions import ConstantChangeError, InvalidTypeError
 # without that it would be a very great hustle for example to change a scene from a office to his home
 
 class Scene(ABC, LayeredDirty):
+    """The scene represents a single page of the application"""
     tickrate = 1/20
+    __defaultName = ""
     
     @abstractmethod
-    async def loop(self) -> None: pass
+    async def loop(self) -> None:
+        """a loop is executed every tick"""
+        pass
     
     
     async def __internalLoop(self):
@@ -55,10 +59,18 @@ class Scene(ABC, LayeredDirty):
         
         self.__isActive = val       
     
-    def __init__(self, name: str, isActive: bool = True, *sprites: Union[AbstractGroup, Iterable]) -> None:
+    def __init__(self, isActive: bool = True, name: Optional[str] = None, *sprites: Union[AbstractGroup, Iterable]) -> None:
+        """creates an instance of the scene
+
+        Args:
+            isActive (bool, optional): if The scene is active. Non-active scenes can still be drawn. Defaults to True.
+            name (Optional[str], optional): The name of the scene. Names have to be unique. If it's none, it will be copied from class default name. Defaults to None.
+        """
         # intialize pygame stuff
         super().__init__(*sprites)
         
         # save attributes
-        self.__name: str = name
+        if name: self.__name = name
+        else: self.__name = self.__defaultName
+        
         self.__isActive: bool = isActive
