@@ -51,7 +51,7 @@ class preloadResourceInformation(TypedDict):
     
     
 class preloadStatusInterface(TypedDict):
-    """dict which have information about current state of preloading\n
+    """a dict that have information about current state of preloading\n
     ------------------------\n
     category (str): name of the category that is currently loading\n
     precentCategory (float): percent of how many resources in category is loaded\n
