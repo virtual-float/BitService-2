@@ -9,6 +9,7 @@
 # Imports
 import json, pygame
 from os import getcwd
+from typing import Any
 
 # Local imports
 import bin.exceptions as e
