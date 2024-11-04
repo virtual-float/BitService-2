@@ -97,7 +97,7 @@ class ResourceManager:
     
     currentResourceManager: 'ResourceManager | None' = None
     
-    def preload(self, listOfItems: list[preloadResourceInformation]) -> preloadStatusInterface:
+    async def preload(self, listOfItems: list[preloadResourceInformation]) -> preloadStatusInterface:
         pass
         # for item in listOfItems:
         #     self.loadRaw()
@@ -175,7 +175,7 @@ class ResourceManager:
     
     
     
-    def getRaw(self, path: str, addToUseCount: bool = False, reloadForce: bool = False) -> any:
+    async def getRaw(self, path: str, addToUseCount: bool = False, reloadForce: bool = False) -> any:
         """allows you to get easily specified path. If it was cached, the cache is used!
 
         Args:
@@ -191,7 +191,7 @@ class ResourceManager:
         """
         # if there no data about it in cache, load it
         if reloadForce or path not in self.__savedFiles:
-            self.loadRaw(path)
+            await self.loadRaw(path)
             
         # get object    
         objectToReturnAndChange: list[any,int,str] | None = self.__savedFiles.get(path, default = None)
@@ -208,7 +208,7 @@ class ResourceManager:
         return objectToReturnAndChange[0]
             
         
-    def loadRaw(self, path: str, forceType: loadedFileType | None = None):
+    async def loadRaw(self, path: str, forceType: loadedFileType | None = None):
         """loads resource from path
 
         Args:
@@ -244,8 +244,8 @@ class ResourceManager:
             
             # no other types
             else:
-                with open(path, "r") as file:
-                    toLoad = file.read()
+                async with open(path, "r") as file:
+                    toLoad = await file.read()
                 fileType = loadedFileType.rawfile
                          
             # set to savedfiles
