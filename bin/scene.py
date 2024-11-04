@@ -14,7 +14,7 @@ from bin.exceptions import ConstantChangeError, InvalidTypeError
 
 # The purpose of this module is to allow abstraction of what is seen on screen
 # Every scene contains of dirty sprites, its own attributes, and loop method
-# without that it would be a very great hustle for example to change a scene from a office to his home (just example)
+# without that it would be a very great hustle for example to change a scene from a office to his home
 
 class Scene(ABC, LayeredDirty):
     tickrate = 1/20

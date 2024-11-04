@@ -1,0 +1,23 @@
+{
+    "BS_LOADING": "Ładowanie",
+    "BS_LOADING_TEXTURES": "Ładowanie tekstur",
+    "BS_LOADING_RESOURCES": "Ładowanie zasobów",
+
+    "BS_READING_GAME_FILES": "Odczytywanie plików gry",
+    "BS_READING_CONFIGS": "Odczytywanie konfiguracji",
+    
+    "BS_OPTION_OK": "Ok",
+    "BS_OPTION_YES": "Tak",
+    "BS_OPTION_NO": "Nie",
+    "BS_OPTION_EXIT": "Wyjdź",
+    "BS_OPTION_PLAY": "Graj",
+    "BS_OPTION_SETTINGS": "Ustawienia",
+    "BS_OPTION_LANGUAGE": "Zmień język",
+    "BS_OPTION_CHANGE": "Zmień",
+    "BS_OPTION_DISCARD_CHANGES": "Odrzuć zmiany",
+    "BS_OPTION_SAVE": "Zapisz",
+    "BS_OPTION_DEFAULT_SETTING": "Ustawienia domyślne",
+    "BS_OPTION_AUTHORS": "Autorzy",
+
+    "BS_INFO_CHANGED": "Dokonano zmian!"
+}
