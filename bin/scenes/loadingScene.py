@@ -13,5 +13,5 @@ from bin.scene import Scene
 # it implements the loading scene on the start
 
 class loadingScene(Scene):
-    def __init__(self, name: str, isActive: bool = True, *sprites: AbstractGroup | Iterable) -> None:
-        super().__init__(name, isActive, *sprites)
+    def __init__(self, isActive: bool = True, name: str | None = None, *sprites: AbstractGroup | Iterable) -> None:
+        super().__init__(isActive, name, *sprites)
