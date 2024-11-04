@@ -1,0 +1,22 @@
+{
+    "exampleCategory": [
+        {
+            "path": "PATHTOFILE",
+            "saveAs": "PATHTOBESAVEDAS",
+            "ofType": "TYPE OF THE FILE, if isn't added it will be assumed based on file extension",
+            "category": "category which is shown on a loading screen",
+            "_COM13": "if true, it will be skipped",
+            "skip": true,
+            "_COM023": "can be loaded after loading screen to save time (not implemented)",
+            "lazyloading": true
+        }
+    ],
+    "example2": [
+        {
+            "path": "sus.png",
+            "as": "sus",
+            "type": "pygamesurface",
+            "category": "assets"
+        }
+    ]
+}

@@ -9,6 +9,8 @@ from pygame import SRCALPHA
 from pygame.surface import Surface
 from pygame.image import load as loadImagePygame
 from enum import Enum
+from typing import Iterable, TypedDict, Optional
+from datetime import datetime
 
 # local imports
 from bin.exceptions import internalResourceManagerError, accessToNotExistingResourceError
@@ -25,6 +27,63 @@ class loadedFileType(Enum):
     rawfile = "rawfile"
     file = "rawfile"
     raw = "rawfile"
+    
+
+class preloadResourceInformation(TypedDict):
+    """represents a single unit of a resource to be preloaded\n\n
+    -------------------------\n
+    path (str): path to the file\n
+    saveAs (Optional[str]): path to be saved as (can be used to just simple time "bob" or "char/bob" instead of "characters/bob.png"). if None then it will be determined during execution by looking at a path\n
+    ofType (Optional[loadedFileType]): type of the file. Used to preoptimize things. If it's not specified, then it will be determined by simply looking at file extension. If something doesn't work then you should change it\n
+    category (str): category that is shown on loading screen\n
+    skip (bool): if this resource should be ignored in preloading. Defaults to false.\n
+    lazyloading (bool): if this resource should be lazy loaded. Defaults to false.\n
+    forceReload (bool): if this resource should be preloaded, even if was already loaded. Defaults to False.\n
+    
+    """
+    path: str
+    saveAs: Optional[str] = None
+    ofType: Optional[loadedFileType] = None
+    category: str
+    skip: bool = False
+    lazyloading: bool = False
+    forceReload: bool = False
+    
+    
+class preloadStatusInterface(TypedDict):
+    """dict which have information about current state of preloading\n
+    ------------------------\n
+    category (str): name of the category that is currently loading\n
+    precentCategory (float): percent of how many resources in category is loaded\n
+    numberOfResourcesInCategoryLoaded (int): how many of resources in current category has been loaded\n
+    numberOfResourcesInCategory (int): the total amount of all resources in current category\n
+    percentWhole (float): percent of how many resources is loaded in total\n
+    numberOfResourcesLoaded (int): the total number of loaded resources\n
+    numberOfResources (int): the total number of resources\n
+    currentResourceAs (str): the name to which the current loading resource is saving\n
+    currentResourcePath (str): the path to current loading resource\n
+    isLoading (bool): if it's still loading\n
+    isLazyLoading (bool): if it's still lazyloading (not implemented)\n
+    startTime (datetime): the start time of the loading\n
+    endTime (datetime): the end time of the loading. it Doesn't include lazy loading. It's none if not completed.\n
+    endTimeLazy (datetime): the end time of the lazy loading. It's none if not completed (not implemented).\n
+    stopped: (bool): if the loading is stopped. It's for possibility of stopping loading (for example to stop lazy loading, if user has window minimized) (not implemented yet)
+    """
+    category: str
+    precentCategory: float
+    numberOfResourcesInCategoryLoaded: int
+    numberOfResourcesInCategory: int
+    precentWhole: float
+    numberOfResourcesLoaded: int
+    numberOfResources: int
+    currentResourceAs: str
+    currentResourcePath: str
+    isLoading: bool
+    isLazyLoading: bool
+    startTime: datetime
+    endTime: Optional[datetime] = None
+    stopped: bool
+
 
 JSONFILES = (".json", ".jso")
 SURFACEFILES = (".jpg")
@@ -38,7 +97,11 @@ class ResourceManager:
     
     currentResourceManager: 'ResourceManager | None' = None
     
-    
+    def preload(self, listOfItems: list[preloadResourceInformation]) -> preloadStatusInterface:
+        pass
+        # for item in listOfItems:
+        #     self.loadRaw()
+        
     
     def clean(self):
         """removes unused resources from cache
