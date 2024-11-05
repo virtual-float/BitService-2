@@ -13,6 +13,7 @@ from typing import Iterable, TypedDict, Optional
 from datetime import datetime
 import traceback
 from aiofiles import open as asyncOpen
+from os import path as pathTools
 
 # local imports
 from bin.exceptions import InternalResourceManagerError, AccessToNotExistingResourceError
@@ -108,12 +109,39 @@ class ResourceManager:
     def clean(self):
         """removes unused resources from cache
         """
-        for resourceName, resourceObject in self.__savedFiles.items():
-           if resourceObject[1] <= 0:
-               del self.__savedFiles[resourceName]
-               
-              
-              
+        for resourceName in list(self.__rawCache.keys()):
+            if resourceName != None and self.__rawCache[resourceName][1] <= 0:
+                # set information about being changed
+                self.__rawCache[resourceName][3][0] = True
+                self.__rawCache[resourceName][3][1] = True
+                
+                # delete resource
+                del self.__rawCache[resourceName]
+        
+        
+    def doesResourceRawExist(self, path: str) -> bool:
+        return path in self.__rawCache
+         
+           
+    def getPointerToResourceRawChangeStatus(self, path: str) -> list[bool]:
+        """ allows you to get a pointer to a specialized information about specified path
+        it doesn't use dicts because it's a lot slower
+
+        Args:
+            path (str): a path to a resource
+
+        Raises:
+            accessToNotExistingResourceError: occurs if there was a try to access nonexistent resource
+
+        Returns:
+            list[IfResourceWasChanged: bool, ifResourceWasDeleted: bool]
+        """
+        obj = self.__rawCache.get(path)
+        if obj == None:
+            raise AccessToNotExistingResourceError(f"Resource {path} doesnt exist")
+        
+        return obj[3]     
+       
                
     def getRawUseCount(self, path: str) -> int:
         """ allows you to get current use of this resource
@@ -127,8 +155,8 @@ class ResourceManager:
         Returns:
             int: current use
         """
-        obj = self.__savedFiles.get(path)
-        if obj != None:
+        obj = self.__rawCache.get(path)
+        if obj == None:
             raise AccessToNotExistingResourceError(f"Resource {path} doesnt exist")
         
         return obj[1]
@@ -146,11 +174,11 @@ class ResourceManager:
         Returns:
             int: current use after addition
         """
-        obj = self.__savedFiles.get(path)
-        if obj != None:
+        obj = self.__rawCache.get(path)
+        if obj == None:
             raise AccessToNotExistingResourceError(f"Resource {path} doesnt exist")
         
-        self.__savedFiles[path][1] += howmuch      
+        self.__rawCache[path][1] += howmuch      
         return obj[1]
                
 
@@ -167,11 +195,11 @@ class ResourceManager:
         Returns:
             int: current use after subtraction
         """
-        obj = self.__savedFiles.get(path)
-        if obj != None:
+        obj = self.__rawCache.get(path)
+        if obj == None:
             raise AccessToNotExistingResourceError(f"Resource {path} doesnt exist")
         
-        self.__savedFiles[path][1] -= howmuch  
+        self.__rawCache[path][1] -= howmuch  
         return obj[1]    
 
     
@@ -191,12 +219,14 @@ class ResourceManager:
         Returns:
             any: _description_
         """
+        
+        
         # if there no data about it in cache, load it
-        if reloadForce or path not in self.__savedFiles:
+        if reloadForce or path not in self.__rawCache:
             await self.loadRaw(path)
             
         # get object    
-        objectToReturnAndChange: list[any,int,str] | None = self.__savedFiles.get(path)
+        objectToReturnAndChange: list[any,int,str] | None = self.__rawCache.get(path)
         
         # if it's none, there's something not good :c
         if objectToReturnAndChange == None:
@@ -221,7 +251,7 @@ class ResourceManager:
             internalResourceManagerError: If it couldn't get its way to load a resource
         """
         try:
-            obj = self.__savedFiles.get(path) # previous obj if there was
+            obj = self.__rawCache.get(path) # previous obj if there was
             
             # wrapper for seeing if a resource was changed
             wrapper: list[bool] | None = None # object to be changed after update is done
@@ -257,7 +287,8 @@ class ResourceManager:
             # 0 = used to cleaning up resourceManager, if there 0 or less it will be removed from memory
             # fileType = type of resource
             # [False] = if resource was changed. There's no pointers in python, so i needed to make this stupid workaround. Maybe it should be rewritten in c or c++ for that reason
-            self.__savedFiles[path] = [toLoad, 0, fileType, [False]]
+            self.__rawCache[pathTools.normpath(path)] = [toLoad, 0, fileType, [False, False]]
+            print('dawda', path, self.__rawCache)
                 
             # set wrapper
             if wrapper != None:
@@ -275,8 +306,8 @@ class ResourceManager:
         self.currentResourceManager = self
         
         
-        self.__savedFiles: dict[str, list[any, int, str, list[bool]]] = {}
-        self.__savedFiles.setdefault(None)
+        self.__rawCache: dict[str, list[any, int, str, list[bool]]] = {}
+        self.__rawCache.setdefault(None)
         
 
     

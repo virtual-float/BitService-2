@@ -10,7 +10,7 @@ from pygame.sprite import AbstractGroup
 # local imports
 from bin.scene import Scene
 
-# it implements the loading scene on the start
+# it implements the loading scene at the start
 
 class loadingScene(Scene):
     __defaultName = "loadingScene"

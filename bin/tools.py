@@ -24,7 +24,7 @@ async def readJSON(document_path: str) -> dict:
     if not isJSONFile(document_path):
         raise e.JSONInvalidFileError('Attempted to read a non-json file!')
 
-    async with asyncOpen(file=path.join(getcwd(), document_path), mode='r', encoding='UTF-8') as file:
+    async with asyncOpen(file=document_path, mode='r', encoding='UTF-8') as file:
         content = await file.read()
 
     return json.loads(content)
@@ -34,7 +34,7 @@ async def writeJSON(document_path: str, json_pyobj: dict) -> None:
     if not isJSONFile(document_path):
         raise e.JSONInvalidFileError('Attempted to write to a non-json file!')
 
-    with asyncOpen(file=path.join(getcwd(), document_path), mode='w', encoding='UTF-8') as file:
+    with asyncOpen(file=document_path, mode='w', encoding='UTF-8') as file:
         stringified_json = json.dumps(json_pyobj, indent=4)
 
         await file.write(stringified_json)
@@ -44,7 +44,7 @@ async def createJSON(document_destination: str, json_pyobj: dict = {}) -> None:
     if not isJSONFile(document_destination):
         raise e.JSONInvalidFileError('Attempted to create a non-json file!')
     
-    async with asyncOpen(file=path.join(getcwd(), document_destination), mode='x', encoding='UTF-8') as file:
+    async with asyncOpen(file=document_destination, mode='x', encoding='UTF-8') as file:
         stringified_json = json.dumps(json_pyobj, indent=4)
 
         await file.write(stringified_json)

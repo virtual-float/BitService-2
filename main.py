@@ -1,6 +1,7 @@
 # Imports
 import asyncio, pygame
 from typing import Final
+from os import path, getcwd
 
 # Local imports
 import bin.fonts as font
@@ -17,7 +18,9 @@ async def main():
     
     # TODO: Add a loading screen window
     # app_resource: Final[dict] = await tools.readJSON('\\config\\default.json')
-    app_resource: Final[dict] = await rs.getRaw('\\config\\default.json', True, True)
+    app_resource: Final[dict] = await rs.getRaw(path.join("config", "default.json"), True, True)
+    
+    
 
     display = pygame.display.set_mode((800, 600))
     pygame.display.set_caption(app_resource.get('title'))
