@@ -19,6 +19,9 @@ async def main():
     # TODO: Add a loading screen window
     # app_resource: Final[dict] = await tools.readJSON('\\config\\default.json')
     app_resource: Final[dict] = await rs.getRaw(path.join("config", "default.json"), True, True)
+    app_resource2: Final[dict] = await rs.getRaw(path.join("config", "default.json"), True, True)
+    print("czy to jest ten sam obiekt: ", app_resource2 is app_resource2)
+
 
     display = pygame.display.set_mode((800, 600))
     pygame.display.set_caption(app_resource.get('title'))

@@ -288,7 +288,6 @@ class ResourceManager:
             # fileType = type of resource
             # [False] = if resource was changed. There's no pointers in python, so i needed to make this stupid workaround. Maybe it should be rewritten in c or c++ for that reason
             self.__rawCache[pathTools.normpath(path)] = [toLoad, 0, fileType, [False, False]]
-            print('dawda', path, self.__rawCache)
                 
             # set wrapper
             if wrapper != None:
