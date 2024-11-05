@@ -255,8 +255,8 @@ class ResourceManager:
             
             # wrapper for seeing if a resource was changed
             wrapper: list[bool] | None = None # object to be changed after update is done
-            if obj != None and type(obj) == dict: # get object if there was one
-                wrapper = obj[4] 
+            if obj != None and type(obj) == list: # get object if there was one
+                wrapper = obj[3] 
                 
             # surface files for images
             if path.endswith(SURFACEFILES) or forceType == loadedFileType.pygamesurface:
@@ -287,11 +287,11 @@ class ResourceManager:
             # 0 = used to cleaning up resourceManager, if there 0 or less it will be removed from memory
             # fileType = type of resource
             # [False] = if resource was changed. There's no pointers in python, so i needed to make this stupid workaround. Maybe it should be rewritten in c or c++ for that reason
-            self.__rawCache[pathTools.normpath(path)] = [toLoad, 0, fileType, [False, False]]
+            self.__rawCache[path] = [toLoad, 0, fileType, [False, False]]
                 
             # set wrapper
             if wrapper != None:
-                wrapper[3][0] = True
+                wrapper[0] = True
                 
                 
         except Exception as e:
